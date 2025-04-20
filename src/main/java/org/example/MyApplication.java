@@ -83,6 +83,6 @@ public class MyApplication extends Application {
 
     private void onClickAction() {
         keyCount++;
-        Platform.runLater(() -> keyCountLabel.setText("Key Count: " + keyCount));
+        Platform.runLater(() -> keyCountLabel.setText("Keys Typed: " + keyCount));
     }
 }
