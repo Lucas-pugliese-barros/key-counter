@@ -32,4 +32,18 @@
             <version>17.0.1</version> <!-- Use the appropriate version -->
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>key-counter</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.example.keycounter.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
