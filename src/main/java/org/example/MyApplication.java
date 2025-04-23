@@ -1,70 +1,37 @@
 package org.example;
 
-import com.github.kwhat.jnativehook.GlobalScreen;
-import com.github.kwhat.jnativehook.NativeHookException;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.example.controller.KeyCounterController;
+import org.example.model.KeyCounterModel;
+import org.example.view.KeyCounterView;
 
-import java.util.Objects;
-
+import java.io.IOException;
 
 public class MyApplication extends Application {
-
-    int keyCount = 0;
-    private double xOffset = 0;
-    private double yOffset = 0;
-    private Label keyCountLabel;
-    GlobalKeyListener globalKeyListener;
-
-    public MyApplication() {
-        globalKeyListener = new GlobalKeyListener(this::onClickAction);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private KeyCounterView view;
 
     @Override
-    public void start(Stage stage) throws Exception {
-        keyCountLabel = new Label("Keys Typed: 0");
-        keyCountLabel.setFont(Font.font("Verdana", 28));
-        keyCountLabel.setTextFill(Color.WHITE);
+    public void start(Stage stage) throws IOException {
+        KeyCounterModel model = new KeyCounterModel();
+        KeyCounterController controller = new KeyCounterController(model, stage);
 
-        StackPane root = new StackPane();
-        root.setAlignment(Pos.CENTER);
-        root.getChildren().add(keyCountLabel);
+        FXMLLoader loader = new FXMLLoader(MyApplication.class.getResource("/main.fxml"));
+        if (loader.getLocation() == null) {
+            throw new IllegalStateException("FXML file not found at /main.fxml");
+        }
+        loader.setController(controller);
+        loader.load();
 
-        BackgroundImage backgroundImage = new BackgroundImage(
-                new Image(getClass().getResource("/background.png").toExternalForm()),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
-        );
-        root.setBackground(new Background(backgroundImage));
+        view = new KeyCounterView(controller);
 
-        root.setOnMousePressed(event -> {
-            xOffset = event.getSceneX();
-            yOffset = event.getSceneY();
-        });
-
-        root.setOnMouseDragged(event -> {
-            stage.setX(event.getScreenX() - xOffset);
-            stage.setY(event.getScreenY() - yOffset);
-        });
-
-        double size = 300;
-
-        Scene scene = new Scene(root, size + 50, size);
+        Scene scene = new Scene(controller.getRoot(), 500, 400);
+        stage.setScene(scene);
+        stage.setTitle("Key Counter");
         scene.setFill(Color.TRANSPARENT);
 
         stage.initStyle(StageStyle.TRANSPARENT);
@@ -72,17 +39,16 @@ public class MyApplication extends Application {
         stage.setResizable(true);
 
         stage.show();
+    }
 
-        try {
-            GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeKeyListener(globalKeyListener);
-        } catch (NativeHookException e) {
-            e.printStackTrace();
+    @Override
+    public void stop() {
+        if (view != null) {
+            view.shutdown();
         }
     }
 
-    private void onClickAction() {
-        keyCount++;
-        Platform.runLater(() -> keyCountLabel.setText("Keys Typed: " + keyCount));
+    public static void main(String[] args) {
+        launch(args);
     }
 }
