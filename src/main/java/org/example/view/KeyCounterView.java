@@ -3,6 +3,7 @@ package org.example.view;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import javafx.application.Platform;
 import org.example.GlobalKeyListener;
 import org.example.controller.KeyCounterController;
 
@@ -11,7 +12,6 @@ import java.util.logging.Logger;
 
 public class KeyCounterView {
     private static final Logger LOGGER = Logger.getLogger(KeyCounterView.class.getName());
-
     private final KeyCounterController controller;
     private final NativeKeyListener keyListener;
 
@@ -29,7 +29,8 @@ public class KeyCounterView {
     }
 
     private void onKeyTyped() {
-        controller.handleKeyPress();
+        // Run UI updates on the JavaFX Application Thread
+        Platform.runLater(() -> controller.handleKeyPress());
     }
 
     public void shutdown() {
@@ -37,7 +38,7 @@ public class KeyCounterView {
             GlobalScreen.removeNativeKeyListener(keyListener);
             GlobalScreen.unregisterNativeHook();
         } catch (NativeHookException e) {
-            LOGGER.log(Level.SEVERE, "Shutdown KeyListener", e);
+            LOGGER.log(Level.SEVERE, "Failed to unregister native hook", e);
         }
     }
 }
