@@ -1,6 +1,57 @@
+/* Root pane with background image */
 .root-pane {
     -fx-background-image: url("/background.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-size: auto auto;
+    -fx-background-size: cover;
+    -fx-background-color: #E0E0E0; /* Fallback */
+}
+
+/* Key count label */
+.key-count-label {
+    -fx-font-family: "Verdana";
+    -fx-font-size: 28px;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
+}
+
+/* Button container (HBox) */
+.button-box {
+    -fx-alignment: center;
+}
+
+/* Reset button */
+.reset-button {
+    -fx-font-family: "Verdana";
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #6200EE;
+    -fx-background-radius: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 6, 0, 0, 2);
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.reset-button:hover {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3700B3;
+    -fx-background-radius: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 6, 0, 0, 2);
+}
+
+/* Pause button */
+.pause-button {
+    -fx-font-family: "Verdana";
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #3700B3;
+    -fx-background-radius: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 6, 0, 0, 2);
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.pause-button:hover {
+    -fx-background-color: #018786;
 }
