@@ -29,7 +29,7 @@ public class MyApplication extends Application {
 
         view = new KeyCounterView(controller);
 
-        Scene scene = new Scene(controller.getRoot(), 500, 400);
+        Scene scene = new Scene(controller.getRoot(), 300, 275);
         stage.setScene(scene);
         stage.setTitle("Key Counter");
         scene.setFill(Color.TRANSPARENT);
